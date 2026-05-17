@@ -2,35 +2,22 @@
 
 A production-ready fraud detection system achieving 94.2% accuracy with <100ms latency and <3% false positive rate.
 
-## 🏗️ System Architecture
+## System Architecture
 
-```
-┌─────────────────┐     ┌──────────────┐     ┌─────────────────┐
-│  Transaction    │────▶│    Kafka     │────▶│ Spark Streaming │
-│     Source      │     │   Broker     │     │   Processing    │
-└─────────────────┘     └──────────────┘     └────────┬────────┘
-                                                       │
-                                                       ▼
-┌─────────────────┐     ┌──────────────┐     ┌─────────────────┐
-│   Monitoring    │◀────│  Feature     │◀────│  Real-time      │
-│   Dashboard     │     │   Store      │     │  Features       │
-│  (Grafana)      │     │  (Redis)     │     │  Engineering    │
-└─────────────────┘     └──────────────┘     └─────────────────┘
-                                                       │
-┌─────────────────┐     ┌──────────────┐              │
-│   ML Models     │◀────│   FastAPI    │◀─────────────┘
-│ (XGBoost/RF/    │     │   Inference  │
-│  LightGBM)      │     │     API      │
-└────────┬────────┘     └──────────────┘
-         │                      │
-         ▼                      ▼
-┌─────────────────┐     ┌──────────────┐
-│  Model Registry │     │  Fraud Alert │
-│    (MLflow)     │     │    System    │
-└─────────────────┘     └──────────────┘
+```mermaid
+flowchart LR
+    A[Transaction Source] --> B[Kafka Broker]
+    B --> C[Spark Streaming Processing]
+    C --> D[Real-time Features Engineering]
+    D --> E[(Feature Store<br/>Redis)]
+    E --> F[FastAPI Inference]
+    G[ML Models<br/>XGBoost / RF / LightGBM] --> F
+    F --> H[Fraud Alert System]
+    F --> I[Monitoring Dashboard<br/>Grafana]
+    G --> J[Model Registry<br/>MLflow]
 ```
 
-## 🚀 Features
+## Features
 
 - **Real-time Processing**: <100ms latency for fraud detection
 - **High Accuracy**: 94.2% detection rate with <3% false positives
@@ -41,7 +28,7 @@ A production-ready fraud detection system achieving 94.2% accuracy with <100ms l
 - **Explainability**: SHAP values for regulatory compliance
 - **Production Ready**: Docker + Kubernetes deployment
 
-## 📋 Prerequisites
+## Prerequisites
 
 - Python 3.8+
 - Docker & Docker Compose
@@ -49,7 +36,7 @@ A production-ready fraud detection system achieving 94.2% accuracy with <100ms l
 - Redis
 - PostgreSQL (optional for data storage)
 
-## 🛠️ Installation
+## Installation
 
 1. **Clone the repository**
 ```bash
@@ -79,7 +66,7 @@ cp .env.example .env
 docker-compose up -d
 ```
 
-## 🏃 Quick Start
+## Quick Start
 
 ### 1. Train the Model
 ```bash
@@ -106,7 +93,7 @@ python src/features/feature_store.py
 streamlit run src/monitoring/dashboard.py
 ```
 
-## 📊 API Usage
+## API Usage
 
 ### Predict Fraud
 ```bash
@@ -140,7 +127,7 @@ curl -X POST "http://localhost:8000/predict" \
 }
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Kafka Configuration (`config/kafka_config.yaml`)
 ```yaml
@@ -164,7 +151,7 @@ training:
   class_balance: smote
 ```
 
-## 📈 Performance Metrics
+## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
@@ -175,7 +162,7 @@ training:
 | Latency (P95) | 95ms |
 | Throughput | 10K+ req/sec |
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run unit tests
@@ -188,7 +175,7 @@ pytest tests/integration/
 locust -f tests/load/locustfile.py
 ```
 
-## 🔍 Monitoring
+## Monitoring
 
 Access the monitoring dashboard at `http://localhost:8501`
 
@@ -199,7 +186,7 @@ Metrics tracked:
 - API latency and throughput
 - Alert notifications
 
-## 📦 Project Structure
+## Project Structure
 
 ```
 fraud-detection-system/
@@ -223,7 +210,7 @@ fraud-detection-system/
 └── README.md
 ```
 
-## 🐳 Docker Deployment
+## Docker Deployment
 
 ```bash
 # Build image
@@ -233,13 +220,13 @@ docker build -t fraud-detection:latest .
 docker run -p 8000:8000 fraud-detection:latest
 ```
 
-## ☸️ Kubernetes Deployment
+## Kubernetes Deployment
 
 ```bash
 kubectl apply -f kubernetes/
 ```
 
-## 🔄 CI/CD Pipeline
+## CI/CD Pipeline
 
 GitHub Actions workflow for:
 - Automated testing
@@ -248,7 +235,7 @@ GitHub Actions workflow for:
 - Kubernetes deployment
 - Model versioning with MLflow
 
-## 📚 Documentation
+## Documentation
 
 - [Architecture Guide](docs/architecture.md)
 - [API Documentation](docs/api.md)
@@ -256,7 +243,7 @@ GitHub Actions workflow for:
 - [Deployment Guide](docs/deployment.md)
 - [Monitoring Guide](docs/monitoring.md)
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create feature branch (`git checkout -b feature/AmazingFeature`)
@@ -264,15 +251,15 @@ GitHub Actions workflow for:
 4. Push to branch (`git push origin feature/AmazingFeature`)
 5. Open Pull Request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see [LICENSE](LICENSE) file.
 
-## 👥 Authors
+## Authors
 
 - Jay Guwalani
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Apache Kafka for streaming infrastructure
 - Scikit-learn, XGBoost, LightGBM for ML models
